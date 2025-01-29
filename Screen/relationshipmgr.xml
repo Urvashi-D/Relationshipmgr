@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+require-authentication="anonymous-all">
+    <transition name="createParty">
+        <service-call name="create#relationshipmgr.party.Party"/>
+        <default-response type="none"/><!-- It tells that it does not process any additional response-->
+    </transition>
+    <widgets>
+         <container-box>
+            <box-header title="CREATE PARTY"/>
+            <box-body-nopad>
+                <form-single name="CreateParty" transition="createParty">
+                    <field name="partyId">
+                        <default-field>
+                            <text-line size="15"/>
+                        </default-field>
+                    </field>
+                    <field name="partyTypeEnumId">
+                        <default-field>
+                            <drop-down allow-empty="true" style="">
+                                <entity-options text="${description ?: ''} [${enumId}]">
+                                    <entity-find entity-name="moqui.basic.Enumeration">
+                                        <econdition field-name="enumTypeId" value="PartyType"/>
+                                        <order-by field-name="description"/>
+                                    </entity-find>
+                                </entity-options>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="createPartyButton">
+                        <default-field title="CreateParty">
+                            <submit/>
+                        </default-field>
+                    </field>
+                </form-single>
+            </box-body-nopad>
+        </container-box>
+    </widgets>
+</screen>

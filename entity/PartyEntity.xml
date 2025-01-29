@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-3.xsd">
+
+    <!-- Party entity -->
+    <entity entity-name="Party" package="relationshipmgr.party">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="partyTypeEnumId" type="id" not-null="true"/>
+        <relationship type="one" related="moqui.basic.Enumeration" title="PartyType">
+            <key-map field-name="partyTypeEnumId"/>
+        </relationship>
+        <relationship type="one" related="Person"/>
+        <relationship type="one" related="Organization"/>
+        <seed-data>
+            <moqui.basic.EnumerationType description="party Type" enumTypeId="PartyType"/>
+            <moqui.basic.Enumeration description="Person" enumId="Person" enumTypeId="PartyType"/>
+            <moqui.basic.Enumeration description="Organization" enumId="Organization" enumTypeId="PartyType"/>
+
+            <relationshipmgr.party.Party partyId="PER123" partyTypeEnumId="Person"/>
+            <relationshipmgr.party.Party partyId="ORG456" partyTypeEnumId="Organization"/>
+        </seed-data>
+    </entity>
+
+    <!-- Person Entity -->
+    <entity entity-name="Person" package="relationshipmgr.person">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="firstName" type="text-medium"/>
+        <field name="lastName" type="text-medium"/>
+        <field name="birthDate" type="date"/>
+        <seed-data>
+             <relationshipmgr.person.Person partyId="PER123" firstName="John" lastName="Doe" birthDate="1990-01-01"/>
+        </seed-data>
+    </entity>
+
+    <!-- Organization Entity -->
+    <entity entity-name="Organization" package="relationshipmgr.org">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="organizationName" type="text-medium"/>
+        <seed-data>
+            <relationshipmgr.org.Organization partyId="ORG456" organizationName="ABC"/>
+        </seed-data>
+    </entity>
+
+    <!-- Party Role Entity -->
+       <entity entity-name="PartyRole" package="relationshipmgr.prole">
+            <field name="partyId" type="id" is-pk="true"/>
+            <field name="roleTypeEnumId" type="id" is-pk="true"/>
+           <relationship type="one"  related="Party"/>
+
+           <relationship type="one" related="moqui.basic.Enumeration" title="PartyRole">
+               <key-map field-name="roleTypeEnumId"/>
+           </relationship>
+           <seed-data>
+               <moqui.basic.EnumerationType description="party Role" enumTypeId="PartyRole"/>
+               <moqui.basic.Enumeration description="CUSTOMER" enumId="Customer" enumTypeId="PartyRole"/>
+               <moqui.basic.Enumeration description="EMPLOYEE" enumId="Employee" enumTypeId="PartyRole"/>
+               <moqui.basic.Enumeration description="EMPLOYER" enumId="Employer" enumTypeId="PartyRole"/>
+
+               <relationshipmgr.prole.PartyRole partyId="PER123" roleTypeEnumId="CUSTOMER"/>
+               <relationshipmgr.prole.PartyRole partyId="PER123" roleTypeEnumId="EMPLOYEE"/>
+               <relationshipmgr.prole.PartyRole partyId="ORG456" roleTypeEnumId="EMPLOYER"/>
+    </seed-data>
+    </entity>
+
+    <!-- Contact Mech Entity -->
+
+    <entity entity-name="ContactMech" package="relationshipmgr.conmech">
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="contactMechTypeEnumId" type="id" />
+        <field name="infoString" type="text-medium" />
+        <relationship type="one" related="ContactMechTel"/>
+        <relationship type="one" related="ContactMechPos"/>
+        <relationship type="one" related="moqui.basic.Enumeration" title="ContactMechType">
+            <key-map field-name="contactMechTypeEnumId"/>
+        </relationship>
+        <seed-data>
+            <moqui.basic.EnumerationType description="Contact Mech Type" enumTypeId="ContactMechtype"/>
+            <moqui.basic.Enumeration description="EMAIL_ADDRESS" enumId="EMAIL_ADDRESS" enumTypeId="ContactMechtype"/>
+            <moqui.basic.Enumeration description="TELECOM_NUMBER" enumId="TELECOM_NUMBER" enumTypeId="ContactMechtype"/>
+            <moqui.basic.Enumeration description="POSTAL_ADDRESS" enumId="POSTAL_ADDRESS" enumTypeId="ContactMechtype"/>
+
+            <relationshipmgr.conmech.ContactMech contactMechId="10000" contactMechTypeEnumId="EMAIL_ADDRESS" infoString="examples@gmail.com"/>
+            <relationshipmgr.conmech.ContactMech contactMechId="10001" contactMechTypeEnumId="TELECOM_NUMBER"/>
+            <relationshipmgr.conmech.ContactMech contactMechId="10002" contactMechTypeEnumId="POSTAL_ADDRESS"/>
+            <relationshipmgr.conmech.ContactMech contactMechId="10003" contactMechTypeEnumId="POSTAL_ADDRESS"/>
+            <relationshipmgr.conmech.ContactMech contactMechId="10004" contactMechTypeEnumId="POSTAL_ADDRESS"/>
+
+        </seed-data>
+    </entity>
+
+    <!-- Contact Mech Telecom  Entity -->
+    <entity entity-name="ContactMechTel" package="relationshipmgr.conmechtel">
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="countryCode" type="number-integer"/>
+        <field name="areaCode" type="number-integer"/>
+        <field name="contactNumber" type="number-integer"/>
+        <relationship type="one" related="ContactMech"/>
+        <seed-data>
+        <relationshipmgr.conmechtel.ContactMechTel contactMechId="10000" countryCode="1" areaCode="123" contactNumber="4567890"/>
+        </seed-data>
+    </entity>
+
+    <!-- Contact Mech Postal Address Entity -->
+    <entity entity-name="ContactMechPos" package="relationshipmgr.conmechpos">
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="toName" type="text-medium"/>
+        <field name="attnName" type="text-medium"/>
+        <field name="address1" type="text-medium"/>
+        <field name="address2" type="text-medium"/>
+        <field name="city" type="text-medium"/>
+        <field name="postalCode" type="number-integer"/>
+        <relationship type="one" related="ContactMech"/>
+        <seed-data>
+            <relationshipmgr.conmechpos.ContactMechPos contactMechId="10002" toName="John Doe" attnName="Office"
+                                                       address1="123 Main St" address2="Suite 100" city="Metropolis" postalCode="12345"/>
+            <relationshipmgr.conmechpos.ContactMechPos contactMechId="10003" toName="John Doe" attnName="Home"
+                                                       address1="123 Main St" address2="Suite 100" city="Metropolis" postalCode="12345"/>
+            <relationshipmgr.conmechpos.ContactMechPos contactMechId="10004" toName="SoHo Store" attnName="Home"
+                                                       address1="123 Broome St" city="New York" postalCode="10012"/>
+        </seed-data>
+    </entity>
+
+    <!-- Contact Mech Purpose Entity -->
+    <entity entity-name="ContactMechPurpose" package="relationshipmgr.conmechpur">
+        <field name="contactMechPurposeId" type="id" is-pk="true"/>
+        <seed-data>
+            <relationshipmgr.conmechpur.ContactMechPurpose contactMechPurposeId="WORK"/>
+            <relationshipmgr.conmechpur.ContactMechPurpose contactMechPurposeId="HOME"/>
+            <relationshipmgr.conmechpur.ContactMechPurpose contactMechPurposeId="OFFICE"/>
+
+        </seed-data>
+    </entity>
+
+    <!-- Party Contact Mech Entity-->
+    <entity entity-name="PartyContactMech" package="relationshipmgr.partyconmech">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="contactMechPurposeId" type="id" />
+        <field name="fromDate" type="date"/>
+        <relationship type="one" related="ContactMech"/>
+        <relationship type="one" related="Party"/>
+        <relationship type="one" related="ContactMechPurpose"/>
+        <seed-data>
+            <relationshipmgr.partyconmech.PartyContactMech partyId="PER123" contactMechId="10000" contactMechPurposeId="WORK" fromDate="2010-01-01" />
+            <relationshipmgr.partyconmech.PartyContactMech partyId="PER123" contactMechId="10001" contactMechPurposeId="WORK" fromDate="2010-01-01" />
+            <relationshipmgr.partyconmech.PartyContactMech partyId="PER123" contactMechId="10002" contactMechPurposeId="WORK" fromDate="2010-01-01" />
+            <relationshipmgr.partyconmech.PartyContactMech partyId="PER123" contactMechId="10003" contactMechPurposeId="Home" fromDate="2005-01-01" />
+            <relationshipmgr.partyconmech.PartyContactMech partyId="ORG456" contactMechId="10000" contactMechPurposeId="OFFICE" fromDate="2010-01-01" />
+            <relationshipmgr.partyconmech.PartyContactMech partyId="ORG456" contactMechId="10002" contactMechPurposeId="OFFICE" fromDate="2000-01-01" />
+        </seed-data>
+    </entity>
+
+</entities>
