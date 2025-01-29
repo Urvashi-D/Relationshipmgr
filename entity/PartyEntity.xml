@@ -14,9 +14,6 @@
             <moqui.basic.EnumerationType description="party Type" enumTypeId="PartyType"/>
             <moqui.basic.Enumeration description="Person" enumId="Person" enumTypeId="PartyType"/>
             <moqui.basic.Enumeration description="Organization" enumId="Organization" enumTypeId="PartyType"/>
-
-            <relationshipmgr.party.Party partyId="PER123" partyTypeEnumId="Person"/>
-            <relationshipmgr.party.Party partyId="ORG456" partyTypeEnumId="Organization"/>
         </seed-data>
     </entity>
 
@@ -26,18 +23,12 @@
         <field name="firstName" type="text-medium"/>
         <field name="lastName" type="text-medium"/>
         <field name="birthDate" type="date"/>
-        <seed-data>
-             <relationshipmgr.person.Person partyId="PER123" firstName="John" lastName="Doe" birthDate="1990-01-01"/>
-        </seed-data>
     </entity>
 
     <!-- Organization Entity -->
     <entity entity-name="Organization" package="relationshipmgr.org">
         <field name="partyId" type="id" is-pk="true"/>
         <field name="organizationName" type="text-medium"/>
-        <seed-data>
-            <relationshipmgr.org.Organization partyId="ORG456" organizationName="ABC"/>
-        </seed-data>
     </entity>
 
     <!-- Party Role Entity -->
@@ -54,11 +45,7 @@
                <moqui.basic.Enumeration description="CUSTOMER" enumId="Customer" enumTypeId="PartyRole"/>
                <moqui.basic.Enumeration description="EMPLOYEE" enumId="Employee" enumTypeId="PartyRole"/>
                <moqui.basic.Enumeration description="EMPLOYER" enumId="Employer" enumTypeId="PartyRole"/>
-
-               <relationshipmgr.prole.PartyRole partyId="PER123" roleTypeEnumId="CUSTOMER"/>
-               <relationshipmgr.prole.PartyRole partyId="PER123" roleTypeEnumId="EMPLOYEE"/>
-               <relationshipmgr.prole.PartyRole partyId="ORG456" roleTypeEnumId="EMPLOYER"/>
-    </seed-data>
+           </seed-data>
     </entity>
 
     <!-- Contact Mech Entity -->
@@ -77,13 +64,6 @@
             <moqui.basic.Enumeration description="EMAIL_ADDRESS" enumId="EMAIL_ADDRESS" enumTypeId="ContactMechtype"/>
             <moqui.basic.Enumeration description="TELECOM_NUMBER" enumId="TELECOM_NUMBER" enumTypeId="ContactMechtype"/>
             <moqui.basic.Enumeration description="POSTAL_ADDRESS" enumId="POSTAL_ADDRESS" enumTypeId="ContactMechtype"/>
-
-            <relationshipmgr.conmech.ContactMech contactMechId="10000" contactMechTypeEnumId="EMAIL_ADDRESS" infoString="examples@gmail.com"/>
-            <relationshipmgr.conmech.ContactMech contactMechId="10001" contactMechTypeEnumId="TELECOM_NUMBER"/>
-            <relationshipmgr.conmech.ContactMech contactMechId="10002" contactMechTypeEnumId="POSTAL_ADDRESS"/>
-            <relationshipmgr.conmech.ContactMech contactMechId="10003" contactMechTypeEnumId="POSTAL_ADDRESS"/>
-            <relationshipmgr.conmech.ContactMech contactMechId="10004" contactMechTypeEnumId="POSTAL_ADDRESS"/>
-
         </seed-data>
     </entity>
 
@@ -94,9 +74,6 @@
         <field name="areaCode" type="number-integer"/>
         <field name="contactNumber" type="number-integer"/>
         <relationship type="one" related="ContactMech"/>
-        <seed-data>
-        <relationshipmgr.conmechtel.ContactMechTel contactMechId="10000" countryCode="1" areaCode="123" contactNumber="4567890"/>
-        </seed-data>
     </entity>
 
     <!-- Contact Mech Postal Address Entity -->
@@ -109,25 +86,11 @@
         <field name="city" type="text-medium"/>
         <field name="postalCode" type="number-integer"/>
         <relationship type="one" related="ContactMech"/>
-        <seed-data>
-            <relationshipmgr.conmechpos.ContactMechPos contactMechId="10002" toName="John Doe" attnName="Office"
-                                                       address1="123 Main St" address2="Suite 100" city="Metropolis" postalCode="12345"/>
-            <relationshipmgr.conmechpos.ContactMechPos contactMechId="10003" toName="John Doe" attnName="Home"
-                                                       address1="123 Main St" address2="Suite 100" city="Metropolis" postalCode="12345"/>
-            <relationshipmgr.conmechpos.ContactMechPos contactMechId="10004" toName="SoHo Store" attnName="Home"
-                                                       address1="123 Broome St" city="New York" postalCode="10012"/>
-        </seed-data>
     </entity>
 
     <!-- Contact Mech Purpose Entity -->
     <entity entity-name="ContactMechPurpose" package="relationshipmgr.conmechpur">
         <field name="contactMechPurposeId" type="id" is-pk="true"/>
-        <seed-data>
-            <relationshipmgr.conmechpur.ContactMechPurpose contactMechPurposeId="WORK"/>
-            <relationshipmgr.conmechpur.ContactMechPurpose contactMechPurposeId="HOME"/>
-            <relationshipmgr.conmechpur.ContactMechPurpose contactMechPurposeId="OFFICE"/>
-
-        </seed-data>
     </entity>
 
     <!-- Party Contact Mech Entity-->
@@ -139,14 +102,5 @@
         <relationship type="one" related="ContactMech"/>
         <relationship type="one" related="Party"/>
         <relationship type="one" related="ContactMechPurpose"/>
-        <seed-data>
-            <relationshipmgr.partyconmech.PartyContactMech partyId="PER123" contactMechId="10000" contactMechPurposeId="WORK" fromDate="2010-01-01" />
-            <relationshipmgr.partyconmech.PartyContactMech partyId="PER123" contactMechId="10001" contactMechPurposeId="WORK" fromDate="2010-01-01" />
-            <relationshipmgr.partyconmech.PartyContactMech partyId="PER123" contactMechId="10002" contactMechPurposeId="WORK" fromDate="2010-01-01" />
-            <relationshipmgr.partyconmech.PartyContactMech partyId="PER123" contactMechId="10003" contactMechPurposeId="Home" fromDate="2005-01-01" />
-            <relationshipmgr.partyconmech.PartyContactMech partyId="ORG456" contactMechId="10000" contactMechPurposeId="OFFICE" fromDate="2010-01-01" />
-            <relationshipmgr.partyconmech.PartyContactMech partyId="ORG456" contactMechId="10002" contactMechPurposeId="OFFICE" fromDate="2000-01-01" />
-        </seed-data>
     </entity>
-
 </entities>

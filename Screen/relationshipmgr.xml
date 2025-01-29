@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
-require-authentication="anonymous-all">
+        require-authentication="anonymous-all">
     <transition name="createParty">
         <service-call name="create#relationshipmgr.party.Party"/>
         <default-response type="none"/><!-- It tells that it does not process any additional response-->
     </transition>
+    
+    <transition name="createPerson">
+        <service-call name="create#relationshipmgr.person.Person" />
+        <default-response type="none"/>
+    </transition>
+
+    <transition name="createOrganization">
+        <service-call name="create#relationshipmgr.org.Organization" />
+        <default-response type="none"/>
+    </transition>
+
+    <transition name="createPartyRole">
+        <service-call name="create#relationshipmgr.prole.PartyRole" />
+        <default-response type="none"/>
+    </transition>
+
     <widgets>
          <container-box>
             <box-header title="CREATE PARTY"/>
@@ -29,6 +45,105 @@ require-authentication="anonymous-all">
                     </field>
                     <field name="createPartyButton">
                         <default-field title="CreateParty">
+                            <submit/>
+                        </default-field>
+                    </field>
+                </form-single>
+            </box-body-nopad>
+        </container-box>
+
+        <!-- Create person -->
+        <container-box>
+            <box-header title="CREATE PERSON"/>
+            <box-body-nopad>
+                <form-single name="CreatePerson" transition="createPerson">
+                    <field name="partyId">
+                        <default-field>
+                            <drop-down allow-empty="true" style="">
+                                <entity-options>
+                                    <entity-find entity-name="relationshipmgr.party.Party"/>
+                                </entity-options>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="firstName">
+                        <default-field>
+                            <text-line size="100"/>
+                        </default-field>
+                    </field>
+                    <field name="lastName">
+                        <default-field>
+                            <text-line size="25"/>
+                        </default-field>
+                    </field>
+                    <field name="birthDate">
+                        <default-field>
+                            <text-line size="10"/>
+                        </default-field>
+                    </field>
+                    <field name="createPerson">
+                        <default-field title="CreatePerson">
+                            <submit/>
+                        </default-field>
+                    </field>
+                </form-single>
+            </box-body-nopad>
+        </container-box>
+
+        <container-box>
+            <box-header title="CreateOrganization"/>
+                <box-body-nopad>
+                    <form-single name="CreateOrganization" transition="createOrganization">
+                        <field name="partyId">
+                            <default-field>
+                                <drop-down allow-empty="true" style="">
+                                    <entity-options>
+                                        <entity-find entity-name="relationshipmgr.party.Party"/>
+                                    </entity-options>
+                                </drop-down>
+                            </default-field>
+                        </field>
+                        <field name="organizationName">
+                            <default-field>
+                                <text-line/>
+                            </default-field>
+                        </field>
+                        <field name="createorg">
+                            <default-field>
+                                <submit/>
+                            </default-field>
+                        </field>
+                    </form-single>
+                </box-body-nopad>
+        </container-box>
+
+        <container-box>
+            <box-header title="CREATE PARTY ROLE"/>
+            <box-body-nopad>
+                <form-single name="CreatePartyRole" transition="createPartyRole">
+                    <field name="partyId" >
+                        <default-field>
+                            <drop-down allow-empty="true" style="">
+                                <entity-options>
+                                    <entity-find entity-name="relationshipmgr.party.Party"/>
+                                </entity-options>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="roleTypeEnumId">
+                        <default-field>
+                            <drop-down allow-empty="true" style="">
+                                <entity-options text="${description ?: ''} [${enumId}]">
+                                    <entity-find entity-name="moqui.basic.Enumeration">
+                                        <econdition field-name="enumTypeId" value="PartyRole"/>
+                                        <order-by field-name="description"/>
+                                    </entity-find>
+                                </entity-options>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="createPartyRole">
+                        <default-field>
                             <submit/>
                         </default-field>
                     </field>
